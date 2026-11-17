@@ -38,7 +38,7 @@
     padding:20px max(32px, env(safe-area-inset-right, 0px)) 20px max(32px, env(safe-area-inset-left, 0px));
   }
   .side-l{justify-self:end;max-width:340px}
-  .side-r{justify-self:start;max-width:300px}
+  .side-r{justify-self:start;max-width:330px}
   .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;letter-spacing:-.02em;margin-bottom:40px}
   .brand .tld{color:var(--blue)}
   .logo{width:30px;height:30px;display:block;flex:none}
@@ -95,18 +95,21 @@
   .g-who::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.8}
   .g-who.deaf{background:#eef3ff;color:var(--blue)}
   .g-who.att{background:var(--ink);color:#fff}
-  .explain h2{margin:0 0 10px;font-size:22px;font-weight:500;letter-spacing:-.03em}
-  .explain p{margin:0;font-size:14.5px;line-height:1.65;color:var(--ink-2);min-height:7.4em}
+  .explain h2{margin:0 0 10px;font-size:25px;font-weight:500;letter-spacing:-.03em;line-height:1.15}
+  .explain p{margin:0;font-size:15.5px;line-height:1.62;color:var(--ink-2);min-height:7.4em}
   .explain p.typing::after{content:"";display:inline-block;width:2px;height:1em;margin-left:2px;vertical-align:-2px;background:var(--blue);animation:caret 1s steps(1) infinite}
   @keyframes caret{50%{opacity:0}}
   .reqs{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
   .reqs:empty{display:none}
   .req{font:500 11px var(--mono);color:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:3px 7px;background:#fff}
   .g-next{
-    margin-top:22px;display:flex;align-items:center;gap:12px;
+    margin-top:22px;display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
     padding:12px 14px;border-radius:12px;border:1px dashed #b9c8f5;background:#f6f9ff;
     font-size:13.5px;color:var(--ink);line-height:1.4;
+    transition:background .15s ease,border-color .15s ease;
   }
+  .g-next:hover{background:#edf3ff;border-style:solid;border-color:#9fb6f2}
+  .g-next:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   .g-next small{display:block;font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2px}
   .g-next b{font-weight:500}
   .g-next .arr{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;flex:none;animation:gnudge 1.8s var(--ease) infinite}
@@ -122,6 +125,46 @@
   .g-cta:active{transform:scale(.99)}
   .g-cta:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   .g-cta[hidden]{display:none}
+
+  /* ================= modo apresentação ================= */
+  .page{padding-bottom:84px}
+  .pres{
+    position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:80;
+    display:flex;align-items:center;gap:4px;padding:5px;border-radius:16px;
+    background:rgba(255,255,255,.88);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);
+    border:1px solid var(--line);box-shadow:0 12px 32px rgba(11,18,32,.12),0 1px 2px rgba(11,18,32,.06);
+  }
+  .pres-btn{width:40px;height:40px;border-radius:11px;border:none;background:transparent;color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:background .15s ease,color .15s ease}
+  .pres-btn:hover:not(:disabled){background:#f1f4f9;color:var(--ink)}
+  .pres-btn:disabled{opacity:.3;cursor:default}
+  .pres-info{display:flex;flex-direction:column;justify-content:center;width:230px;height:34px;padding:0 14px;margin:0 4px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .pres-info span{font:500 10.5px var(--mono);letter-spacing:.06em;color:var(--ink-3);white-space:nowrap}
+  .pres-info b{font-size:13.5px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pres-next{
+    height:40px;padding:0 12px 0 18px;margin-left:4px;border:none;border-radius:11px;background:var(--blue);color:#fff;
+    font-size:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:10px;
+    transition:background .15s ease,transform .1s ease,opacity .2s ease;
+  }
+  .pres-next:hover:not(:disabled){background:#1a44c4}
+  .pres-next:active:not(:disabled){transform:scale(.97)}
+  .pres-next:disabled{opacity:.45;cursor:default}
+  .pres-next kbd{font:500 10.5px var(--mono);padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.18)}
+  .pres button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .pres.busy .pres-info b::after{content:" · voltando…";color:var(--ink-3);font-weight:400}
+  body.full .pres{display:none}
+  .acts{flex-direction:row;flex-wrap:wrap;align-items:center}
+  .acts .text-link{flex-basis:100%}
+  /* telas baixas (notebook, projetor): a coluna da esquerda fica mais compacta */
+  @media (max-height: 980px){
+    .brand{margin-bottom:22px}
+    .side-l .lead{margin-bottom:18px}
+    .route{margin-bottom:18px}
+    .route li{min-height:24px}
+    .fine{display:none}
+  }
+  body.full .page{padding-bottom:0}
+  /* durante o "voltar", tudo acontece sem animação */
+  body.instant *, body.instant *::before, body.instant *::after{transition-duration:0s !important;transition-delay:0s !important;animation-duration:0s !important;animation-delay:0s !important}
 
   /* ================= celular → computador ================= */
   .page{transition:opacity .45s ease}
@@ -357,6 +400,40 @@
   .sim-btn{display:none}
   .sim-btn.on{display:flex}
 
+  /* gravação de exemplos (ensinar sinais) */
+  .teach-bar{position:absolute;top:66px;left:14px;right:14px;display:none;align-items:center;gap:12px;padding:8px 8px 8px 16px;border-radius:16px;background:rgba(255,255,255,.12);backdrop-filter:blur(6px)}
+  #scr-cam.teach .teach-bar{display:flex}
+  #scr-cam.teach .guide{top:146px}
+  .tb-name{flex:1;min-width:0}
+  .tb-name small{display:block;font-size:.7em;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+  .tb-name b{display:block;font-size:1.15em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .tb-count{font-size:1.4em;font-weight:700;font-variant-numeric:tabular-nums}
+  .tb-count > span{font-size:.6em;font-weight:400;color:rgba(255,255,255,.65)}
+  .tb-undo{min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid rgba(255,255,255,.35);background:none;color:#fff;font-family:var(--app-font);font-size:.9em;font-weight:700;cursor:pointer}
+  .tb-undo:disabled{opacity:.35;cursor:default}
+  .tb-undo:focus-visible{outline:3px solid #7fb0ff;outline-offset:2px}
+
+  /* tela ensinar sinais */
+  .teach-lead{margin:2px 0 14px;font-size:.95em;line-height:1.5;color:var(--a-ink2)}
+  .teach-sum{padding:12px 14px;border-radius:14px;background:var(--a-soft);font-size:.88em;line-height:1.45;color:var(--a-ink2);margin-bottom:12px}
+  .teach-sum b{color:var(--a-ink)}
+  .teach-chips{display:flex;gap:8px;margin-bottom:12px}
+  .t-list{display:flex;flex-direction:column;gap:8px}
+  .t-row{position:relative;display:flex;align-items:center;gap:12px;width:100%;min-height:62px;padding:10px 14px 16px;border-radius:16px;border:1.5px solid var(--a-line);background:var(--a-bg);color:var(--a-ink);font-family:var(--app-font);font-size:1em;text-align:left;cursor:pointer;overflow:hidden}
+  .t-row:hover{border-color:var(--a-blue)}
+  .t-row:focus-visible{outline:3px solid var(--a-blue);outline-offset:2px}
+  .t-name{flex:1;min-width:0}
+  .t-name b{display:block;font-size:1em}
+  .t-name small{font:500 10.5px var(--mono);color:var(--a-ink3)}
+  .t-n{font-weight:700;font-size:1.05em;font-variant-numeric:tabular-nums}
+  .t-n small{font-weight:400;color:var(--a-ink3)}
+  .t-bar{position:absolute;left:14px;right:14px;bottom:8px;height:3px;border-radius:2px;background:var(--a-soft)}
+  .t-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--a-blue)}
+  .t-row.ok .t-bar i{background:var(--a-ok)}
+  .teach-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+  .teach-tools .wide{grid-column:1 / -1}
+  .teach-note{margin:14px 2px 0;font-size:.8em;line-height:1.5;color:var(--a-ink3)}
+
   /* folhas (resultado, configurações...) */
   .sheet{
     position:absolute;left:0;right:0;bottom:0;z-index:20;
@@ -544,9 +621,13 @@
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4M2.5 2.5V5H5"/></svg>
         Reiniciar demonstração
       </button>
+      <button type="button" class="btn-line" id="teach-open">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 8.5V3.2a1 1 0 0 1 2 0V7.5M7.5 7V2.2a1 1 0 0 1 2 0V7M9.5 7V3.2a1 1 0 0 1 2 0V9c0 2.8-1.8 5-4.4 5-1.7 0-2.8-.8-3.6-2.2L2.2 9.4a1 1 0 0 1 1.6-1.1l1.7 1.5"/></svg>
+        Ensinar sinais
+      </button>
       <a class="text-link" href="painel.html" id="painel-link">Área da instituição (painel de gestão) →</a>
     </div>
-    <p class="fine">O reconhecimento do sinal é simulado: o modelo treinado com dados reais ainda está em desenvolvimento. A câmera e os 21 pontos da mão são reais e rodam só neste navegador.</p>
+    <p class="fine" id="fine-recog">Reconhecimento real: em <b>Ensinar sinais</b>, grave alguns exemplos de cada sinal e a conversa passa a comparar o que a câmera vê com eles. Sem exemplos, o sinal reconhecido é simulado. Tudo roda só neste navegador.</p>
   </aside>
 
   <div class="device-wrap" id="device-wrap">
@@ -655,6 +736,11 @@
               </button>
               <div class="cam-chip" id="cam-chip"><i></i><span id="cam-chip-t">Câmera ligada</span></div>
             </div>
+            <div class="teach-bar" id="teach-bar">
+              <div class="tb-name"><small>Ensinando o sinal</small><b id="tb-name">—</b></div>
+              <div class="tb-count" aria-live="polite"><b id="tb-n">0</b><span> de <span id="tb-t">8</span></span></div>
+              <button type="button" class="tb-undo" id="tb-undo" disabled>Desfazer</button>
+            </div>
             <div class="cam-bottom">
               <div class="ring" aria-hidden="true">
                 <svg viewBox="0 0 84 84"><circle class="trk" cx="42" cy="42" r="36"/><circle class="val" id="ring-val" cx="42" cy="42" r="36" pathLength="1"/></svg>
@@ -692,6 +778,7 @@
               <p class="s">Repita o sinal um pouco mais devagar, com as mãos dentro do quadro. Para não errar em silêncio, o app não dá palpite.</p>
               <div class="stack">
                 <button type="button" class="a-btn primary block" id="low-retry">Tentar de novo</button>
+                <button type="button" class="a-btn ghost block" id="low-guess" style="display:none">Era “<span id="low-guess-t"></span>”? Confirmar</button>
                 <button type="button" class="a-btn ghost block" id="low-list">Escolher na lista de sinais</button>
               </div>
             </div>
@@ -708,6 +795,32 @@
             <label class="search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="9" r="5.5"/><path d="m13.5 13.5 3 3"/></svg><input type="search" id="fix-q" placeholder="Buscar sinal" aria-label="Buscar sinal"></label>
             <div class="chips" id="fix-chips"></div>
             <div class="scroll"><div class="tiles" id="fix-tiles"></div></div>
+          </section>
+
+          <!-- ensinar sinais (reconhecimento real por exemplos) -->
+          <section class="scr" id="scr-teach" aria-label="Ensinar sinais">
+            <div class="sub-head">
+              <button type="button" class="icon-btn" id="teach-back" aria-label="Voltar para a conversa">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4 6 10l6 6"/></svg>
+              </button>
+              <h2>Ensinar sinais</h2>
+            </div>
+            <div class="scroll">
+              <p class="teach-lead">Grave alguns exemplos de cada sinal. Na conversa, o app compara o que a câmera vê com esses exemplos.</p>
+              <div class="teach-sum" id="teach-sum"></div>
+              <div class="teach-chips">
+                <button type="button" class="chip on" data-tall="0">Sugeridos</button>
+                <button type="button" class="chip" data-tall="1">Todos os 50</button>
+              </div>
+              <div class="t-list" id="teach-list"></div>
+              <div class="teach-tools">
+                <button type="button" class="a-btn ghost" id="teach-export">Exportar</button>
+                <button type="button" class="a-btn ghost" id="teach-import">Importar</button>
+                <button type="button" class="a-btn ghost wide" id="teach-clear">Apagar todos os exemplos</button>
+              </div>
+              <input type="file" id="teach-file" accept="application/json,.json" hidden>
+              <p class="teach-note">Só os pontos das mãos e dos ombros são guardados, neste navegador. Nenhuma imagem. O arquivo exportado é o mesmo formato que vai servir para treinar o modelo definitivo.</p>
+            </div>
           </section>
 
           <!-- frases rápidas -->
@@ -751,6 +864,7 @@
             <div class="set-row"><span><b>Vibração</b><small>Avisa quando a leitura termina</small></span><button type="button" class="sw" role="switch" aria-checked="true" data-set="vib" aria-label="Vibração"></button></div>
             <div class="set-row"><span><b>Métricas anônimas</b><small>Só números de desempenho. Desligado por padrão.</small></span><button type="button" class="sw" role="switch" aria-checked="false" data-set="tele" aria-label="Métricas anônimas"></button></div>
             <div class="stack" style="margin-top:16px">
+              <button type="button" class="a-btn ghost block" id="set-teach">Ensinar sinais (reconhecimento real)</button>
               <button type="button" class="a-btn ghost block" id="set-limits">Limites do app e intérprete</button>
               <button type="button" class="a-btn primary block" id="set-close">Pronto</button>
             </div>
@@ -790,10 +904,10 @@
       <h2 id="ex-title">Abertura</h2>
       <p id="ex-text"></p>
       <div class="reqs" id="ex-reqs"></div>
-      <div class="g-next" id="g-next">
+      <button type="button" class="g-next" id="g-next" title="Executar o próximo passo (→)">
         <span class="arr"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></span>
         <span><small>Próximo passo</small><b id="g-next-t"></b></span>
-      </div>
+      </button>
       <button type="button" class="g-cta" id="g-cta" hidden>
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7.5 16.5h5M10 13.5v3"/></svg>
         <span id="g-cta-t">Ver o lado da instituição</span>
@@ -801,6 +915,23 @@
     </div>
   </aside>
 </div>
+
+<!-- controles da apresentação: clique, setas, espaço ou passador de slides -->
+<nav class="pres" id="pres" aria-label="Controles da apresentação">
+  <button type="button" class="pres-btn" id="pres-restart" title="Recomeçar a apresentação" aria-label="Recomeçar a apresentação">
+    <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4M2.5 2.5V5H5"/></svg>
+  </button>
+  <button type="button" class="pres-btn" id="pres-prev" title="Voltar um passo (←)" aria-label="Voltar um passo">
+    <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H4M7.5 4.5 4 8l3.5 3.5"/></svg>
+  </button>
+  <div class="pres-info" aria-live="polite"><span id="pres-step">Passo 1 de 12</span><b id="pres-title">Abertura</b></div>
+  <button type="button" class="pres-next" id="pres-next" title="Avançar (→, espaço ou passador)">
+    <span id="pres-next-t">Avançar</span><kbd aria-hidden="true">→</kbd>
+  </button>
+  <button type="button" class="pres-btn" id="pres-full" title="Tela cheia (F)" aria-label="Tela cheia">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6V2.5H6M10 2.5h3.5V6M13.5 10v3.5H10M6 13.5H2.5V10"/></svg>
+  </button>
+</nav>
 
 <!-- o celular vira computador: o lado da instituição -->
 <div class="desk" id="desk" aria-hidden="true">
@@ -843,6 +974,184 @@
     set: function(k, v){ try { localStorage.setItem(k, v); } catch (e) {} },
     del: function(k){ try { localStorage.removeItem(k); } catch (e) {} }
   };
+
+  /* =========================================================
+     Reconhecimento por exemplos (fase 1)
+     Cada amostra é uma sequência de quadros com os 21 pontos de cada mão
+     e 9 pontos do corpo (nariz, olhos, boca, ombros, cotovelos). Nunca imagem.
+     Os pontos viram atributos que não dependem de onde a pessoa está nem da
+     distância da câmera: a mão é medida em relação aos ombros e o formato
+     da mão em relação ao tamanho da palma. A comparação entre sequências usa
+     DTW, que tolera o mesmo sinal feito mais rápido ou mais devagar.
+     ========================================================= */
+  var Recog = (function(){
+    var N = 24, BAND = 6, HF = 43, FF = HF * 2;
+    var MISS = 1.5, WL = 1, WS = 1;
+    // índices do Pose Landmarker guardados, na ordem em que ficam no quadro
+    var BODY = [0, 2, 5, 9, 10, 11, 12, 13, 14];
+    var SH_L = 5, SH_R = 6;   // posições dos ombros dentro de BODY
+
+    function median(a){
+      if (!a.length) return NaN;
+      var s = a.slice().sort(function(x, y){ return x - y; }), m = s.length >> 1;
+      return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
+    }
+
+    // referência do corpo para a amostra inteira: centro e largura dos ombros
+    function bodyRef(sample){
+      var A = sample.aspecto || 4 / 3, cx = [], cy = [], sw = [];
+      sample.quadros.forEach(function(q){
+        var b = q.corpo;
+        if (!b) return;
+        var lx = b[SH_L * 3] * A, ly = b[SH_L * 3 + 1], rx = b[SH_R * 3] * A, ry = b[SH_R * 3 + 1];
+        var w = Math.hypot(lx - rx, ly - ry);
+        if (w < 0.05) return;
+        cx.push((lx + rx) / 2); cy.push((ly + ry) / 2); sw.push(w);
+      });
+      if (!sw.length) return { cx: 0.5 * A, cy: 0.78, s: 0.42, guess: true };
+      return { cx: median(cx), cy: median(cy), s: median(sw) };
+    }
+
+    // a mesma mão precisa cair sempre na mesma posição do vetor
+    function slots(sample){
+      var single = { Left: 0, Right: 0 };
+      sample.quadros.forEach(function(q){ if (q.maos.length === 1) single[q.maos[0].lado] = (single[q.maos[0].lado] || 0) + 1; });
+      var main = single.Left > single.Right ? 'Left' : 'Right';
+      return sample.quadros.map(function(q){
+        var out = [null, null];
+        if (q.maos.length === 1) out[main === 'Right' ? 0 : 1] = q.maos[0];
+        else if (q.maos.length >= 2){
+          var a = q.maos[0], b = q.maos[1];
+          if (a.lado === b.lado){ if (a.p[0] > b.p[0]) { var t = a; a = b; b = t; } out[0] = a; out[1] = b; }
+          else { out[a.lado === 'Right' ? 0 : 1] = a; out[b.lado === 'Right' ? 0 : 1] = b; }
+        }
+        return out;
+      });
+    }
+
+    function handFeat(h, A, ref, out, o){
+      if (!h){ for (var k = 0; k < HF; k++) out[o + k] = 0; return; }
+      var p = h.p, x0 = p[0] * A, y0 = p[1];
+      var palm = Math.hypot(p[27] * A - x0, p[28] - y0) || 0.05;
+      out[o] = 1;
+      out[o + 1] = (x0 - ref.cx) / ref.s;
+      out[o + 2] = (y0 - ref.cy) / ref.s;
+      for (var i = 1; i < 21; i++){
+        out[o + 1 + i * 2] = (p[i * 3] * A - x0) / palm;
+        out[o + 2 + i * 2] = (p[i * 3 + 1] - y0) / palm;
+      }
+    }
+
+    // amostra → N quadros × FF atributos
+    function features(sample){
+      var A = sample.aspecto || 4 / 3, ref = bodyRef(sample), sl = slots(sample);
+      var L = sl.length, out = new Float32Array(N * FF);
+      if (!L) return out;
+      for (var i = 0; i < N; i++){
+        var j = L === 1 ? 0 : Math.round(i * (L - 1) / (N - 1));
+        handFeat(sl[j][0], A, ref, out, i * FF);
+        handFeat(sl[j][1], A, ref, out, i * FF + HF);
+      }
+      return out;
+    }
+
+    function frameDist(a, ia, b, ib){
+      var d = 0;
+      for (var s = 0; s < 2; s++){
+        var oa = ia + s * HF, ob = ib + s * HF, pa = a[oa], pb = b[ob];
+        if (!pa && !pb) continue;
+        if (!pa || !pb){ d += MISS; continue; }
+        var loc = Math.hypot(a[oa + 1] - b[ob + 1], a[oa + 2] - b[ob + 2]), sh = 0;
+        for (var i = 3; i < HF; i += 2) sh += Math.hypot(a[oa + i] - b[ob + i], a[oa + i + 1] - b[ob + i + 1]);
+        d += WL * loc + WS * sh / 20;
+      }
+      return d;
+    }
+
+    var D = new Float64Array((N + 1) * (N + 1));
+    function dtw(a, b){
+      var W = N + 1, INF = 1e9, i, j;
+      for (i = 0; i < D.length; i++) D[i] = INF;
+      D[0] = 0;
+      for (i = 1; i <= N; i++){
+        var lo = Math.max(1, i - BAND), hi = Math.min(N, i + BAND);
+        for (j = lo; j <= hi; j++){
+          var c = frameDist(a, (i - 1) * FF, b, (j - 1) * FF);
+          var m = D[(i - 1) * W + j - 1];
+          if (D[(i - 1) * W + j] < m) m = D[(i - 1) * W + j];
+          if (D[i * W + j - 1] < m) m = D[i * W + j - 1];
+          D[i * W + j] = c + m;
+        }
+      }
+      return D[N * W + N] / N;
+    }
+
+    // espelho de uma amostra: o mesmo sinal feito com a outra mão. Assim, quem
+    // é canhoto é reconhecido com os exemplos de quem é destro, e vice-versa.
+    var BODY_SWAP = [0, 2, 1, 4, 3, 6, 5, 8, 7];   // olhos, boca, ombros e cotovelos trocam de lado
+    function mirror(sample){
+      return { sinal: sample.sinal, id: sample.id + '~espelho', aspecto: sample.aspecto, quadros: sample.quadros.map(function(q){
+        var corpo = null;
+        if (q.corpo){
+          corpo = [];
+          BODY_SWAP.forEach(function(src){ corpo.push(1 - q.corpo[src * 3], q.corpo[src * 3 + 1], q.corpo[src * 3 + 2]); });
+        }
+        return { t: q.t, corpo: corpo, maos: q.maos.map(function(h){
+          var p = h.p.slice();
+          for (var i = 0; i < p.length; i += 3) p[i] = 1 - p[i];
+          return { lado: h.lado === 'Left' ? 'Right' : 'Left', p: p };
+        }) };
+      }) };
+    }
+
+    // --- biblioteca de exemplos ---
+    var lib = [], scales = {}, globalScale = 0.6;
+    function rebuild(samples){
+      lib = samples.map(function(s){ return { gloss: s.sinal, id: s.id, f: features(s) }; });
+      var originals = lib.slice();
+      samples.forEach(function(s){ lib.push({ gloss: s.sinal, id: s.id + '~espelho', f: features(mirror(s)), mirror: true }); });
+      scales = {};
+      var by = {}, all = [];
+      originals.forEach(function(t){ (by[t.gloss] = by[t.gloss] || []).push(t); });   // a escala vem só dos originais
+      Object.keys(by).forEach(function(g){
+        var ts = by[g];
+        if (ts.length < 2) return;
+        var nn = ts.map(function(t){
+          var best = Infinity;
+          ts.forEach(function(u){ if (u !== t) best = Math.min(best, dtw(t.f, u.f)); });
+          return best;
+        });
+        scales[g] = Math.max(0.15, median(nn));
+        all.push(scales[g]);
+      });
+      if (all.length) globalScale = median(all);
+    }
+    function glosses(){
+      var seen = {};
+      lib.forEach(function(t){ if (!t.mirror) seen[t.gloss] = (seen[t.gloss] || 0) + 1; });
+      return seen;
+    }
+
+    // devolve o melhor sinal, a confiança (0–1) e a segunda opção
+    function classify(sample){
+      if (!lib.length) return null;
+      var f = features(sample), by = {};
+      lib.forEach(function(t){ (by[t.gloss] = by[t.gloss] || []).push(dtw(f, t.f)); });
+      var rank = Object.keys(by).map(function(g){
+        var ds = by[g].sort(function(x, y){ return x - y; }), k = Math.min(2, ds.length), s = 0;
+        for (var i = 0; i < k; i++) s += ds[i];
+        return { gloss: g, d: s / k };
+      }).sort(function(x, y){ return x.d - y.d; });
+      var best = rank[0], second = rank[1] || null;
+      var r = best.d / (scales[best.gloss] || globalScale);
+      var abs = r <= 1.2 ? 1 : Math.exp(-(r - 1.2) * 1.5);
+      var margin = second ? (second.d - best.d) / second.d : 1;
+      var conf = (0.62 + 0.36 * Math.min(1, margin / 0.3)) * abs;
+      return { gloss: best.gloss, conf: Math.max(0, Math.min(0.98, conf)), dist: best.d, ratio: r, margin: margin, second: second && second.gloss };
+    }
+
+    return { N: N, BODY: BODY, features: features, dtw: dtw, mirror: mirror, rebuild: rebuild, classify: classify, glosses: glosses, size: function(){ return lib.length; } };
+  })();
 
   /* ================= dados (catálogo de demonstração) ================= */
   var SIGN_CATS = ['Cumprimentos', 'Identificação', 'Motivo', 'Encaminhamento', 'Horário', 'Comunicação'];
@@ -947,7 +1256,26 @@
       [], 'Toque em Ver o lado da instituição', '#g-cta', 'Ver o lado da instituição'],
     'complete': [12, 'both', 'Do balcão à gestão',
       'A pessoa surda foi entendida, o atendente respondeu em Libras, o app admitiu quando não tinha certeza e nada ficou guardado. A instituição só vê números anônimos e cuida do conteúdo.',
-      [], 'Explore à vontade, ou reinicie a demonstração', '#restart', 'Ver o painel de novo']
+      [], 'Explore à vontade, ou reinicie a demonstração', '#restart', 'Ver o painel de novo'],
+    'onb-video': [1, 'both', 'O aviso, em Libras',
+      'O mesmo aviso, agora em Libras, para a pessoa surda. No app, é um vídeo gravado por intérprete; aqui, uma ilustração. Ao terminar, volta sozinho.',
+      ['RF-010', 'RNE-007'], 'Aguarde o vídeo, ou avance', null],
+    'cam-low': [7, 'deaf', 'Uma nova leitura',
+      'A pessoa sinaliza de novo. Desta vez o app não vai ter certeza: na demonstração, de propósito; com o reconhecimento real ligado, faça um gesto que você não ensinou.',
+      ['RNE-003'], 'Avance e veja o que o app faz', '#guide'],
+    // fora do roteiro (passo -1): reconhecimento real por exemplos
+    'teach': [-1, 'att', 'Ensinar sinais',
+      'Aqui o app aprende de verdade. Para cada sinal, grave de 5 a 8 exemplos. Ficam guardados só os pontos das mãos e dos ombros, neste navegador, nunca imagem. Na conversa, o app compara o sinal feito com esses exemplos.',
+      ['RF-002', 'RNE-006'], 'Escolha um sinal para gravar', '#teach-list .t-row'],
+    'teach-cam': [-1, 'att', 'Gravando exemplos',
+      'Levante as mãos, faça o sinal inteiro e abaixe as mãos: é isso que marca o começo e o fim. Varie um pouco a velocidade e a posição entre um exemplo e outro, para o app aprender o sinal e não um único jeito de fazê-lo.',
+      ['RF-002'], 'Faça o sinal e abaixe as mãos, várias vezes', '#teach-bar'],
+    'cam-real': [3, 'deaf', 'Sinalizar',
+      'Reconhecimento real: o app compara o sinal com os exemplos gravados em Ensinar sinais. A leitura começa quando as mãos sobem e termina quando descem. Só pontos, nenhum quadro guardado.',
+      ['RF-001', 'RF-002', 'RNE-006'], 'Faça um sinal que você ensinou e abaixe as mãos', '#guide'],
+    'chat-phrase-real': [7, 'deaf', 'E se o app não tiver certeza?',
+      'Agora faça um gesto que você não ensinou. O app deve admitir que não reconheceu em vez de chutar: errar em silêncio é pior do que não responder.',
+      ['RNE-003'], 'Toque em Sinalizar e faça um gesto qualquer', '#go-sign']
   };
   var F = {};   // progresso da demonstração
   function resetProgress(){ F = { signed: false, phrased: false, lowShown: false, fixed: false, settings: false, ended: false, desk: false }; }
@@ -960,17 +1288,20 @@
       case 'splash': return 'splash';
       case 'onb': return 'onb' + Math.min(onbStep, 2);
       case 'cam':
+        if (cam.purpose === 'teach') return 'teach-cam';
         if ($('#sh-low.on')) return 'low';
         if ($('#sh-result.on')) return 'result';
-        return cam.mode === 'sim' ? 'cam-sim' : 'cam';
+        if (F.phrased && !F.lowShown) return 'cam-low';
+        return cam.mode === 'sim' ? 'cam-sim' : Recog.size() ? 'cam-real' : 'cam';
+      case 'teach': return 'teach';
       case 'fix': return 'fix';
       case 'phr': return (phrCat === null && !$('#phr-q').value) ? 'phr' : 'phr-list';
-      case 'video': return 'video';
+      case 'video': return vid && vid.opts && vid.opts.back === 'onb' ? 'onb-video' : 'video';
       case 'chat':
         if (F.ended) return F.desk ? 'complete' : 'done';
         if (!F.signed) return 'chat0';
         if (!F.phrased) return 'chat-sign';
-        if (!F.lowShown) return 'chat-phrase';
+        if (!F.lowShown) return Recog.size() ? 'chat-phrase-real' : 'chat-phrase';
         if (!F.settings) return 'chat-fixed';
         return 'chat-end';
     }
@@ -991,7 +1322,7 @@
   }
   function typeText(el, text){
     var my = ++gType;
-    if (reduce){ el.textContent = text; return; }
+    if (reduce || pres.fast){ el.textContent = text; return; }
     el.textContent = '';
     el.classList.add('typing');
     var i = 0;
@@ -1005,6 +1336,7 @@
   }
   function updateGuide(){
     var key = guideKey();
+    presUI();
     if (!key || !GUIDE[key]) return;
     var g = GUIDE[key];
     // o destaque é atualizado sempre (o alvo pode ter acabado de aparecer)
@@ -1012,12 +1344,16 @@
     if (key === gKey) return;
     gKey = key;
     var step = g[0], total = ROUTE.length;
-    $$('#route li').forEach(function(li, i){
-      li.classList.toggle('done', i < step);
-      li.classList.toggle('now', i === step);
-    });
-    $('#g-count').textContent = step >= total ? 'Roteiro completo' : 'Passo ' + (step + 1) + ' de ' + total;
-    $('#g-bar').style.width = (Math.min(step, total) / total * 100) + '%';
+    if (step < 0){
+      $('#g-count').textContent = 'Fora do roteiro';
+    } else {
+      $$('#route li').forEach(function(li, i){
+        li.classList.toggle('done', i < step);
+        li.classList.toggle('now', i === step);
+      });
+      $('#g-count').textContent = step >= total ? 'Roteiro completo' : 'Passo ' + (step + 1) + ' de ' + total;
+      $('#g-bar').style.width = (Math.min(step, total) / total * 100) + '%';
+    }
     var box = $('#explain');
     box.classList.add('swap');
     setTimeout(function(){
@@ -1032,7 +1368,7 @@
       $('#g-cta').hidden = !g[7];
       if (g[7]) $('#g-cta-t').textContent = g[7];
       box.classList.remove('swap');
-      if (narrate) narrateText(g[2] + '. ' + g[3]);
+      if (narrate && !pres.fast) narrateText(g[2] + '. ' + g[3]);
     }, reduce ? 0 : 200);
   }
   function explain(){ updateGuide(); }
@@ -1040,7 +1376,7 @@
   /* ---------- celular → computador (painel da instituição) ---------- */
   var desk = $('#desk'), deskFrame = $('#desk-frame'), deskIframe = $('#desk-iframe');
   var deskOpen = false, deskTimers = [];
-  function later(fn, ms){ deskTimers.push(setTimeout(fn, reduce ? 0 : ms)); }
+  function later(fn, ms){ deskTimers.push(setTimeout(fn, reduce || pres.fast ? 0 : ms)); }
   function clearLater(){ deskTimers.forEach(clearTimeout); deskTimers = []; }
   function placeFrame(r){
     deskFrame.style.left = r.left + 'px'; deskFrame.style.top = r.top + 'px';
@@ -1050,7 +1386,7 @@
   // o monitor: tela 16:10 renderizando o painel em 1280×800, reduzido para caber
   function deskLayout(){
     var capH = 96, standH = 43, gap = 18;
-    var s = Math.min(1.3, (window.innerWidth - 120) / 1280, (window.innerHeight - 48 - standH - gap - capH) / 800);
+    var s = Math.min(1.3, (window.innerWidth - 120) / 1280, (window.innerHeight - 48 - 70 - standH - gap - capH) / 800);
     var sw = 1280 * s, sh = 800 * s, fw = sw + 24, fh = sh + 24;
     var left = (window.innerWidth - fw) / 2, top = Math.max(20, (window.innerHeight - (fh + standH + gap + capH)) / 2);
     return { s: s, frame: { left: left, top: top, width: fw, height: fh } };
@@ -1168,7 +1504,7 @@
     var full = window.innerWidth < 560;
     document.body.classList.toggle('full', full);
     if (full){ deviceWrap.style.width = deviceWrap.style.height = ''; device.style.transform = ''; return; }
-    var s = Math.min(1, (window.innerHeight - 40) / 864);
+    var s = Math.min(1, (window.innerHeight - 40 - 70) / 864);   // 70: barra da apresentação
     device.style.transform = 'scale(' + s + ')';
     deviceWrap.style.width = (410 * s) + 'px';
     deviceWrap.style.height = (864 * s) + 'px';
@@ -1229,6 +1565,7 @@
     if (from === 'cam' && name !== 'cam') stopCam();
     if (name === 'chat') renderChat();
     if (name === 'fix') renderFix();
+    if (name === 'teach') renderTeach();
     if (name === 'phr') { phrCat = null; $('#phr-q').value = ''; renderPhr(); }
     explain(name);
   }
@@ -1265,7 +1602,7 @@
     } catch (e) {}
   }
   function speak(text){
-    if (!S.voice || !window.speechSynthesis) return;
+    if (!S.voice || pres.fast || !window.speechSynthesis) return;
     try {
       speechSynthesis.cancel();
       var u = new SpeechSynthesisUtterance(text);
@@ -1484,7 +1821,7 @@
         var seen = store.get('sc_onb');
         go(seen ? 'chat' : 'onb');
         if (!seen) resetOnb();
-      }, reduce ? 0 : 450);
+      }, reduce || pres.fast ? 0 : 450);
     }
     splashDone = finish;
     if (reduce){ finish(); return; }
@@ -1639,8 +1976,10 @@
   var MP = 'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14';
   var MODEL = 'https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task';
   var video = $('#cam-video'), cc = $('#cam-canvas'), cctx = cc.getContext('2d');
-  var cam = { stream: null, hl: null, loading: null, failed: false, mode: 'sim', active: false, raf: 0,
-              handMs: 0, lastSeen: 0, lastT: 0, paused: false, frames: 0, simUntil: 0 };
+  // corpo (nariz, olhos, boca, ombros, cotovelos): dá a referência de onde a mão está
+  var POSE_MODEL = 'https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task';
+  var cam = { stream: null, hl: null, pl: null, body: null, loading: null, failed: false, mode: 'sim', active: false, raf: 0,
+              handMs: 0, lastSeen: 0, lastT: 0, paused: false, frames: 0, simUntil: 0, purpose: 'talk', msgUntil: 0 };
 
   function requestCamera(){
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.resolve(false);
@@ -1658,6 +1997,16 @@
             runningMode: 'VIDEO', numHands: 2
           });
         }
+        // o corpo carrega em paralelo e não segura a mão: sem ele, a posição
+        // da mão vira uma estimativa pelo quadro da câmera
+        function makePose(delegate){
+          return mod.PoseLandmarker.createFromOptions(fs, {
+            baseOptions: { modelAssetPath: POSE_MODEL, delegate: delegate },
+            runningMode: 'VIDEO', numPoses: 1
+          });
+        }
+        makePose('GPU').catch(function(){ return makePose('CPU'); })
+          .then(function(pl){ cam.pl = pl; }, function(){});
         return make('GPU').catch(function(){ return make('CPU'); });
       });
     }).then(function(hl){ cam.hl = hl; return hl; }, function(err){ cam.failed = true; cam.loading = null; throw err; });
@@ -1690,26 +2039,40 @@
   function setChip(t, sim){ $('#cam-chip-t').textContent = t; $('#cam-chip').classList.toggle('sim', !!sim); }
   function setRing(p){ $('#ring-val').style.strokeDashoffset = (1 - p).toFixed(4); }
 
-  function openCam(){
+  function realChip(){
+    if (cam.purpose === 'teach') return 'Câmera ligada · guardando só pontos';
+    return Recog.size() ? 'Câmera ligada · reconhecimento real' : 'Câmera ligada · sinal simulado';
+  }
+  function readyStatus(){
+    return cam.purpose === 'teach' || Recog.size() ? 'Faça o sinal e abaixe as mãos' : 'Mostre as mãos dentro do quadro';
+  }
+  function openCam(purpose){
+    cam.purpose = purpose === 'teach' ? 'teach' : 'talk';
+    $('#scr-cam').classList.toggle('teach', cam.purpose === 'teach');
+    if (cam.purpose === 'teach') updateTeachBar();
     go('cam');
-    cam.active = true; cam.paused = false; cam.handMs = 0; cam.frames = 0; cam.simUntil = 0;
+    cam.active = true; cam.paused = false; cam.handMs = 0; cam.frames = 0; cam.simUntil = 0; cam.msgUntil = 0;
+    cam.hands = []; cam.handed = []; cam.lastVT = -1; smooth.hands = {}; smooth.lastT = 0;
+    cam.fps = 0; cam.fpsN = 0; cam.fpsT = 0; cam.ms = 0;
+    resetSeg(false);
     setRing(0);
     setChip('Ligando a câmera…');
     setStatus('Um instante…');
     $('#sim-btn').classList.remove('on');
     $('#guide').classList.remove('seen');
     sizeCam();
+    updateGuide();
     startStream().then(function(ok){
       if (!cam.active){ stopStream(); return; }
       if (!ok){ enterSim('Câmera indisponível · demonstração'); return; }
-      setChip('Câmera ligada · nada é gravado');
-      if (cam.hl){ cam.mode = 'real'; setStatus('Mostre as mãos dentro do quadro'); return; }
+      setChip(realChip());
+      if (cam.hl){ cam.mode = 'real'; setStatus(readyStatus()); return; }
       cam.mode = 'wait';
       setStatus('Preparando o reconhecimento…');
       (preloadModel() || Promise.reject()).then(function(){
         if (!cam.active) return;
         cam.mode = 'real';
-        setStatus('Mostre as mãos dentro do quadro');
+        setStatus(readyStatus());
       }, function(){
         if (!cam.active) return;
         enterSim('Leitura da mão indisponível · demonstração');
@@ -1720,6 +2083,12 @@
     cam.raf = requestAnimationFrame(camLoop);
   }
   function enterSim(chip){
+    if (cam.purpose === 'teach'){
+      // ensinar sem câmera não faz sentido: volta e explica
+      go('teach');
+      toast('Para ensinar sinais, o app precisa da câmera e da leitura da mão.');
+      return;
+    }
     cam.mode = 'sim';
     setChip(chip, true);
     setStatus('Toque para simular um sinal');
@@ -1730,7 +2099,7 @@
     cam.simUntil = performance.now() + 2200;
     $('#sim-btn').classList.remove('on');
   });
-  $('#cam-back').addEventListener('click', function(){ go('chat'); });
+  $('#cam-back').addEventListener('click', function(){ go(cam.purpose === 'teach' ? 'teach' : 'chat'); });
 
   var CW = 0, CH = 0;
   function sizeCam(){
@@ -1738,7 +2107,15 @@
     CW = cc.clientWidth; CH = cc.clientHeight;
     cc.width = Math.round(CW * dpr); cc.height = Math.round(CH * dpr);
     cctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    gc.width = cc.width; gc.height = cc.height;
+    gx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    gc2.width = cc.width; gc2.height = cc.height;
+    gx2.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
+  // camada separada para a luva: desenhada opaca e depois aplicada com
+  // transparência, para os dedos sobrepostos não escurecerem uns aos outros
+  var gc = document.createElement('canvas'), gx = gc.getContext('2d');
+  var gc2 = document.createElement('canvas'), gx2 = gc2.getContext('2d');
   window.addEventListener('resize', function(){ if (cur === 'cam') sizeCam(); });
 
   // converte coordenadas normalizadas do vídeo para a tela (object-fit: cover + espelho)
@@ -1756,38 +2133,242 @@
     });
     return [out];
   }
-  function drawHands(hands, sim){
-    cctx.clearRect(0, 0, CW, CH);
-    hands.forEach(function(h){
-      var pts = h.map(function(p){ return sim ? { x: p.x * CW, y: p.y * CH } : mapPt(p); });
-      cctx.lineCap = 'round';
-      cctx.strokeStyle = 'rgba(255,255,255,.85)'; cctx.lineWidth = 2.2;
-      E.forEach(function(e){
-        cctx.beginPath(); cctx.moveTo(pts[e[0]].x, pts[e[0]].y); cctx.lineTo(pts[e[1]].x, pts[e[1]].y); cctx.stroke();
-      });
-      pts.forEach(function(p, i){
-        var tip = TIPS.indexOf(i) > -1;
-        cctx.beginPath(); cctx.arc(p.x, p.y, tip ? 6 : 4.5, 0, 6.283);
-        cctx.fillStyle = tip ? '#7fb0ff' : '#1f4fe0'; cctx.fill();
-        cctx.strokeStyle = '#fff'; cctx.lineWidth = 1.6; cctx.stroke();
-      });
+  /* ---------- a mão na tela ----------
+     Uma luva fina e transparente, ajustada à largura real dos dedos: silhueta
+     única com contorno de luz, véu de cor por dentro e os ossos como linhas
+     claras. As pontas dos dedos deixam um rastro curto, que mostra o caminho
+     do movimento (no sinal, o movimento faz parte do significado).
+     Direita em azul, esquerda em verde-água; durante a leitura, a luva acende. */
+  var HAND_C = {
+    Right: { a: '64,120,255', b: '120,200,255', edge: '205,226,255', core: '236,244,255' },
+    Left:  { a: '16,170,150', b: '90,230,205', edge: '196,246,236', core: '232,253,248' }
+  };
+  var HAND_F = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]];
+  var HAND_W = [0.2, 0.155, 0.16, 0.15, 0.13];   // largura de cada dedo, em relação à palma (medida numa mão real)
+  var HAND_E = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[0,17],[17,18],[18,19],[19,20]];
+  function dist(a, b){ return Math.hypot(a.x - b.x, a.y - b.y); }
+  function rgba(c, a){ return 'rgba(' + c + ',' + a.toFixed(3) + ')'; }
+  function handShape(ctx, pts, palm, grow){
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    var w = pts[0], m = pts[9], dm = dist(w, m) || 1;
+    var vx = -(w.y - m.y) / dm, vy = (w.x - m.x) / dm;
+    var wa = { x: w.x + vx * palm * 0.22, y: w.y + vy * palm * 0.22 }, wb = { x: w.x - vx * palm * 0.22, y: w.y - vy * palm * 0.22 };
+    if (dist(wb, pts[1]) < dist(wa, pts[1])){ var t = wa; wa = wb; wb = t; }
+    var poly = [wa, pts[1], pts[2], pts[5], pts[9], pts[13], pts[17], wb];
+    ctx.lineWidth = palm * 0.16 + grow;
+    ctx.beginPath();
+    poly.forEach(function(q, k){ if (k) ctx.lineTo(q.x, q.y); else ctx.moveTo(q.x, q.y); });
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    HAND_F.forEach(function(f, fi){
+      ctx.lineWidth = palm * HAND_W[fi] + grow;
+      ctx.beginPath(); ctx.moveTo(pts[f[0]].x, pts[f[0]].y);
+      for (var k = 1; k < 4; k++) ctx.lineTo(pts[f[k]].x, pts[f[k]].y);
+      ctx.stroke();
     });
   }
+  function drawHand(pts, col, live, trails){
+    var palm = Math.max(dist(pts[0], pts[9]), dist(pts[5], pts[17]) * 1.25, dist(pts[0], pts[5]) * 1.05);
+    var s = Math.max(0.75, Math.min(1.7, palm / 140)), on = live ? 1 : 0;
+
+    // rastro das pontas dos dedos (por baixo da luva)
+    cctx.save(); cctx.lineCap = 'round';
+    if (trails) trails.forEach(function(tr){
+      for (var k = 1; k < tr.length; k++){
+        var f = k / tr.length;
+        cctx.strokeStyle = rgba(col.b, 0.5 * f * f);
+        cctx.lineWidth = (1 + 3 * f) * s;
+        cctx.beginPath(); cctx.moveTo(tr[k - 1].x, tr[k - 1].y); cctx.lineTo(tr[k].x, tr[k].y); cctx.stroke();
+      }
+    });
+    cctx.restore();
+
+    // luva: véu em degradê, desenhado opaco numa camada e aplicado com
+    // transparência (assim palma e dedos sobrepostos não escurecem)
+    var edge = (live ? 1.6 : 1.1) * s;
+    gx.clearRect(0, 0, CW, CH);
+    var g = gx.createLinearGradient(pts[0].x, pts[0].y, pts[12].x, pts[12].y);
+    g.addColorStop(0, rgba(col.a, 1)); g.addColorStop(1, rgba(col.b, 1));
+    gx.fillStyle = gx.strokeStyle = g;
+    handShape(gx, pts, palm, 0);
+    cctx.save(); cctx.globalAlpha = live ? 0.34 : 0.22; cctx.drawImage(gc, 0, 0, CW, CH); cctx.restore();
+    // contorno: a silhueta um pouco maior, menos a silhueta exata
+    gx2.clearRect(0, 0, CW, CH);
+    gx2.globalCompositeOperation = 'source-over';
+    gx2.fillStyle = gx2.strokeStyle = rgba(col.edge, 1);
+    handShape(gx2, pts, palm, edge * 2);
+    gx2.globalCompositeOperation = 'destination-out';
+    gx2.fillStyle = gx2.strokeStyle = '#000';
+    handShape(gx2, pts, palm, 0);
+    gx2.globalCompositeOperation = 'source-over';
+    cctx.drawImage(gc2, 0, 0, CW, CH);
+
+    // ossos: linhas finas e claras
+    cctx.save();
+    cctx.lineCap = 'round'; cctx.lineJoin = 'round';
+    cctx.beginPath();
+    HAND_E.forEach(function(e){ cctx.moveTo(pts[e[0]].x, pts[e[0]].y); cctx.lineTo(pts[e[1]].x, pts[e[1]].y); });
+    cctx.strokeStyle = rgba(col.core, live ? 0.75 : 0.5); cctx.lineWidth = 1.1 * s; cctx.stroke();
+    cctx.fillStyle = rgba(col.core, 0.85);
+    for (var i = 0; i < 21; i++){
+      if (TIPS.indexOf(i) > -1) continue;
+      cctx.beginPath(); cctx.arc(pts[i].x, pts[i].y, 1.8 * s, 0, 6.283); cctx.fill();
+    }
+    // pontas: halo + ponto
+    TIPS.forEach(function(i){
+      var p = pts[i], r = (11 + on * 5) * s;
+      var h = cctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+      h.addColorStop(0, rgba(col.b, 0.75)); h.addColorStop(0.4, rgba(col.b, 0.2)); h.addColorStop(1, rgba(col.b, 0));
+      cctx.fillStyle = h; cctx.beginPath(); cctx.arc(p.x, p.y, r, 0, 6.283); cctx.fill();
+      cctx.beginPath(); cctx.arc(p.x, p.y, 3 * s, 0, 6.283); cctx.fillStyle = '#fff'; cctx.fill();
+    });
+    cctx.restore();
+  }
+
+  // filtro One Euro: firme com a mão parada, sem atraso com a mão em movimento
+  function OneEuro(minCut, beta){ this.minCut = minCut; this.beta = beta; this.x = null; this.dx = 0; }
+  OneEuro.prototype.f = function(x, dt){
+    if (this.x === null){ this.x = x; return x; }
+    function k(cut){ return 1 / (1 + 1 / (2 * Math.PI * cut * dt)); }
+    this.dx += k(1) * ((x - this.x) / dt - this.dx);
+    this.x += k(this.minCut + this.beta * Math.abs(this.dx)) * (x - this.x);
+    return this.x;
+  };
+  var smooth = { hands: {}, lastT: 0 };
+  function smoothHand(key, pts, now){
+    var dt = smooth.lastT ? Math.max(0.004, Math.min(0.1, (now - smooth.lastT) / 1000)) : 0.016;
+    var h = smooth.hands[key];
+    if (!h || now - h.seen > 300){
+      h = smooth.hands[key] = { f: pts.map(function(){ return [new OneEuro(1.0, 0.05), new OneEuro(1.0, 0.05)]; }) };
+    }
+    h.seen = now;
+    return pts.map(function(p, i){ return { x: h.f[i][0].f(p.x, dt), y: h.f[i][1].f(p.y, dt) }; });
+  }
+
+  function drawHands(hands, sim, handed, now){
+    cctx.clearRect(0, 0, CW, CH);
+    var live = seg.on, used = {};
+    hands.forEach(function(h, i){
+      var raw = h.map(function(p){ return sim ? { x: p.x * CW, y: p.y * CH } : mapPt(p); });
+      // o MediaPipe nomeia a mão supondo imagem espelhada; a câmera frontal
+      // entrega sem espelho, então o rótulo vem trocado
+      var c = handed && handed[i] && handed[i][0];
+      var side = c && c.categoryName === 'Right' ? 'Left' : 'Right';
+      var key = side + (used[side] ? '2' : ''); used[side] = 1;
+      var pts = smoothHand(key, raw, now), sh = smooth.hands[key];
+      // rastro: as últimas posições de cada ponta de dedo (~0,25 s)
+      sh.trails = sh.trails || TIPS.map(function(){ return []; });
+      TIPS.forEach(function(ti, k){ var tr = sh.trails[k]; tr.push({ x: pts[ti].x, y: pts[ti].y }); if (tr.length > 15) tr.shift(); });
+      drawHand(pts, HAND_C[side], live, reduce ? null : sh.trails);
+    });
+    smooth.lastT = now;
+  }
+  function drawBody(b){
+    if (!b) return;
+    var l = mapPt(b[11]), r = mapPt(b[12]), n = mapPt(b[0]);
+    cctx.strokeStyle = 'rgba(255,255,255,.35)'; cctx.lineWidth = 2;
+    cctx.beginPath(); cctx.moveTo(l.x, l.y); cctx.lineTo(r.x, r.y); cctx.stroke();
+    [l, r, n].forEach(function(p){
+      cctx.beginPath(); cctx.arc(p.x, p.y, 4, 0, 6.283);
+      cctx.fillStyle = 'rgba(255,255,255,.55)'; cctx.fill();
+    });
+  }
+
+  /* ---------- começo e fim do sinal ----------
+     A leitura começa quando uma mão sobe no quadro e termina quando as mãos
+     descem (ou saem) por um instante. Sinais longos demais são cortados em 4 s. */
+  var seg = { on: false, frames: [], start: 0, lastUp: 0, upCount: 0, block: false };
+  function resetSeg(block){ seg.on = false; seg.frames = []; seg.upCount = 0; seg.block = !!block; }
+  function r4(v){ return Math.round(v * 1e4) / 1e4; }
+  function snapFrame(now, hands, handed){
+    var maos = hands.map(function(h, i){
+      var c = handed[i] && handed[i][0];
+      var p = [];
+      h.forEach(function(q){ p.push(r4(q.x), r4(q.y), r4(q.z || 0)); });
+      return { lado: c ? c.categoryName : 'Right', p: p };
+    });
+    var corpo = null;
+    if (cam.body){
+      corpo = [];
+      Recog.BODY.forEach(function(k){ var q = cam.body[k]; corpo.push(r4(q.x), r4(q.y), r4(q.z || 0)); });
+    }
+    return { t: Math.round(now), maos: maos, corpo: corpo };
+  }
+  function segStep(now, hands, handed){
+    var up = hands.some(function(h){ return h[0].y < 0.92; });
+    if (!seg.on){
+      if (seg.block){ if (!up) seg.block = false; return 'down'; }
+      seg.upCount = up ? seg.upCount + 1 : 0;
+      if (seg.upCount < 3) return null;
+      seg.on = true; seg.frames = []; seg.start = now; seg.lastUp = now;
+    }
+    seg.frames.push(snapFrame(now, hands, handed));
+    if (up) seg.lastUp = now;
+    var dur = now - seg.start;
+    if (now - seg.lastUp < 350 && dur < 4000) return 'rec';
+    var fr = seg.frames;
+    while (fr.length && !fr[fr.length - 1].maos.length) fr.pop();
+    resetSeg(dur >= 4000 && up);
+    if (fr.length < 8 || fr[fr.length - 1].t - fr[0].t < 350) return 'short';
+    var t0 = fr[0].t;
+    fr.forEach(function(q){ q.t -= t0; });
+    return { aspecto: r4((video.videoWidth || 640) / (video.videoHeight || 480)), quadros: fr };
+  }
+  function realStep(now, hands, handed){
+    var r = segStep(now, hands, handed);
+    if (r === null || r === 'down'){
+      setRing(0);
+      if (now > cam.msgUntil) setStatus(r === 'down' ? 'Abaixe as mãos para o próximo' : readyStatus());
+      return;
+    }
+    if (r === 'rec'){ setRing(clamp((now - seg.start) / 4000, 0, 1)); setStatus('Lendo o sinal…'); return; }
+    setRing(0);
+    if (r === 'short'){ cam.msgUntil = now + 1400; setStatus('Rápido demais. Faça o sinal de novo.'); return; }
+    if (cam.purpose === 'teach'){ saveTeach(r, now); return; }
+    var c = Recog.classify(r);
+    if (!c) return;
+    cam.paused = true;
+    var s = sign(c.gloss) || { idx: -1, gloss: c.gloss, pt: c.gloss, thr: 0.8 };
+    recognized({ s: s, conf: c.conf, real: true, second: c.second });
+  }
+
   function camLoop(now){
     if (!cam.active) return;
     var dt = Math.min(100, now - cam.lastT); cam.lastT = now;
-    var hands = [], sim = false;
+    var hands = [], handed = [], sim = false, fresh = true;
     if (cam.mode === 'real' && cam.hl && video.readyState >= 2){
-      try { hands = cam.hl.detectForVideo(video, now).landmarks || []; } catch (e) { hands = []; }
-      cam.frames++;
+      // detecta só quando a câmera entrega um quadro novo; nos outros quadros
+      // da tela, o desenho continua deslizando com o filtro
+      fresh = video.currentTime !== cam.lastVT;
+      if (fresh){
+        cam.lastVT = video.currentTime;
+        var res = null, t0 = performance.now();
+        try { res = cam.hl.detectForVideo(video, now); } catch (e) { res = null; }
+        var ms = performance.now() - t0;
+        cam.ms = cam.ms ? cam.ms * 0.9 + ms * 0.1 : ms;
+        cam.fpsN = (cam.fpsN || 0) + 1;
+        if (!cam.fpsT) cam.fpsT = now;
+        if (now - cam.fpsT >= 1000){ cam.fps = Math.round(cam.fpsN * 1000 / (now - cam.fpsT)); cam.fpsN = 0; cam.fpsT = now; }
+        cam.hands = (res && res.landmarks) || [];
+        cam.handed = (res && (res.handedness || res.handednesses)) || [];
+        if (cam.pl && cam.frames % 3 === 0){
+          try { var pr = cam.pl.detectForVideo(video, now); cam.body = (pr && pr.landmarks && pr.landmarks[0]) || null; } catch (e) {}
+        }
+        cam.frames++;
+      }
+      hands = cam.hands || []; handed = cam.handed || [];
     } else if (cam.mode === 'sim' && now < cam.simUntil){
       hands = simHand(now); sim = true; cam.frames++;
     }
-    drawHands(hands, sim);
+    drawHands(hands, sim, handed, now);
+    if (cam.mode === 'real') drawBody(cam.body);
     $('#guide').classList.toggle('seen', hands.length > 0);
-    $('#cam-priv').textContent = '21 pontos por mão · ' + cam.frames.toLocaleString('pt-BR') + ' quadros descartados · 0 salvos';
+    // desempenho ao vivo (metas: 15 quadros/s ou mais e menos de 100 ms por leitura)
+    var perf = cam.mode === 'real' && cam.fps ? cam.fps + ' quadros/s · ' + Math.round(cam.ms) + ' ms · ' : '';
+    $('#cam-priv').textContent = perf + cam.frames.toLocaleString('pt-BR') + ' quadros descartados · ' + (cam.purpose === 'teach' ? 'só pontos, 0 imagens' : '0 salvos');
 
-    if (!cam.paused && (cam.mode === 'real' || cam.mode === 'sim')){
+    if (!cam.paused && cam.mode === 'real' && (cam.purpose === 'teach' || Recog.size())){
+      if (fresh) realStep(now, hands, handed);
+    } else if (!cam.paused && (cam.mode === 'real' || cam.mode === 'sim')){
       if (hands.length){ cam.handMs += dt; cam.lastSeen = now; }
       else if (now - cam.lastSeen > 450) cam.handMs = Math.max(0, cam.handMs - dt * 2);
       var p = clamp(cam.handMs / 1500, 0, 1);
@@ -1813,18 +2394,23 @@
     var s = SIGNS[Math.floor(Math.random() * SIGNS.length)];
     return { s: s, conf: Math.min(0.98, s.thr + 0.02 + Math.random() * 0.08) };
   }
-  function recognized(){
-    var r = nextRecognition();
+  var lowGuess = null;
+  function recognized(real){
+    var r = real || nextRecognition();
     buzz(40); flash(); chime();
     if (r.conf < r.s.thr){
       pending = null;
+      // no reconhecimento real, o palpite aparece só como pergunta: quem confirma é uma pessoa
+      lowGuess = r.real && r.conf >= 0.4 ? r : null;
+      $('#low-guess').style.display = lowGuess ? '' : 'none';
+      if (lowGuess) $('#low-guess-t').textContent = r.s.pt;
       F.lowShown = true;
       openSheet('sh-low', 'low');
       return;
     }
     pending = r;
     $('#res-pt').textContent = r.s.pt;
-    $('#res-gl').textContent = 'sinal ' + r.s.gloss;
+    $('#res-gl').textContent = 'sinal ' + r.s.gloss + (r.real ? ' · reconhecimento real' : '');
     $('#res-conf').textContent = pct(r.conf);
     $('#res-min').textContent = 'mínimo ' + pct(r.s.thr);
     $('#res-mark').style.left = (r.s.thr * 100) + '%';
@@ -1836,6 +2422,7 @@
   function retry(){
     closeSheet('sh-result'); closeSheet('sh-low');
     cam.handMs = 0; cam.paused = false; setRing(0);
+    resetSeg(true);
     explain('cam');
     if (cam.mode === 'sim'){ setStatus('Toque para simular um sinal'); $('#sim-btn').classList.add('on'); }
   }
@@ -1851,6 +2438,178 @@
   $('#res-fix').addEventListener('click', function(){ go('fix'); });
   $('#low-retry').addEventListener('click', retry);
   $('#low-list').addEventListener('click', function(){ go('fix'); });
+  $('#low-guess').addEventListener('click', function(){
+    if (!lowGuess) return;
+    addMsg({ kind: 'sign', pt: lowGuess.s.pt, gloss: lowGuess.s.gloss, conf: null, fixed: true });
+    speak(lowGuess.s.pt);
+    lowGuess = null;
+    F.signed = true; F.fixed = true;
+    go('chat');
+    renderChat(true);
+  });
+
+  /* ================= ensinar sinais ================= */
+  // amostras guardadas no IndexedDB deste navegador (só pontos)
+  var DB = (function(){
+    var dbp = null;
+    function open(){
+      if (dbp) return dbp;
+      dbp = new Promise(function(res, rej){
+        try {
+          var rq = indexedDB.open('sinalclaro', 1);
+          rq.onupgradeneeded = function(){ rq.result.createObjectStore('amostras', { keyPath: 'id' }); };
+          rq.onsuccess = function(){ res(rq.result); };
+          rq.onerror = function(){ rej(rq.error); };
+        } catch (e) { rej(e); }
+      });
+      return dbp;
+    }
+    function tx(mode, fn){
+      return open().then(function(db){
+        return new Promise(function(res, rej){
+          var t = db.transaction('amostras', mode), rq = fn(t.objectStore('amostras'));
+          t.oncomplete = function(){ res(rq ? rq.result : undefined); };
+          t.onerror = function(){ rej(t.error); };
+        });
+      });
+    }
+    return {
+      all: function(){ return tx('readonly', function(st){ return st.getAll(); }); },
+      put: function(s){ return tx('readwrite', function(st){ st.put(s); }); },
+      putMany: function(list){ return tx('readwrite', function(st){ list.forEach(function(s){ st.put(s); }); }); },
+      del: function(id){ return tx('readwrite', function(st){ st.delete(id); }); },
+      clear: function(){ return tx('readwrite', function(st){ st.clear(); }); }
+    };
+  })();
+  var samples = [];
+  var TEACH_SUG = ['OI', 'OBRIGADO', 'SIM', 'NÃO', 'DOR', 'FEBRE', 'CARTÃO-SUS', 'AJUDA', 'BANHEIRO', 'ONDE', 'ESPERAR', 'ENTENDER'];
+  var TARGET = 8;
+  var teach = { gloss: null, last: [], all: false };
+  function countOf(g){ var n = 0; samples.forEach(function(s){ if (s.sinal === g) n++; }); return n; }
+  function samplesChanged(){
+    Recog.rebuild(samples);
+    if (cur === 'teach') renderTeach();
+    if (cur === 'cam') setChip(realChip());
+  }
+  function renderTeach(){
+    var list = teach.all ? SIGNS : TEACH_SUG.map(sign);
+    var box = $('#teach-list');
+    box.innerHTML = list.map(function(s){
+      var n = countOf(s.gloss);
+      return '<button type="button" class="t-row' + (n >= 5 ? ' ok' : '') + '" data-g="' + esc(s.gloss) + '">' +
+        '<span class="t-name"><b>' + esc(s.pt) + '</b><small>' + esc(s.gloss) + '</small></span>' +
+        '<span class="t-n">' + n + '<small> / ' + TARGET + '</small></span>' +
+        '<span class="t-bar"><i style="width:' + Math.min(100, n / TARGET * 100) + '%"></i></span></button>';
+    }).join('');
+    $$('.t-row', box).forEach(function(b){
+      b.addEventListener('click', function(){ teach.gloss = b.getAttribute('data-g'); teach.last = []; openCam('teach'); });
+    });
+    var gs = Object.keys(Recog.glosses()).length;
+    $('#teach-sum').innerHTML = gs
+      ? '<b>' + gs + (gs === 1 ? ' sinal' : ' sinais') + '</b> com exemplos, <b>' + samples.length + '</b> exemplos no total. O reconhecimento real já está ligado na conversa.' +
+        (gs === 1 ? ' Ensine pelo menos mais um sinal, para o app ter o que comparar.' : '')
+      : 'Nenhum exemplo ainda. Enquanto isso, a conversa usa o reconhecimento simulado.';
+  }
+  function updateTeachBar(){
+    var s = sign(teach.gloss);
+    $('#tb-name').textContent = s ? s.pt : (teach.gloss || '—');
+    $('#tb-n').textContent = countOf(teach.gloss);
+    $('#tb-t').textContent = TARGET;
+    $('#tb-undo').disabled = !teach.last.length;
+  }
+  function saveTeach(sample, now){
+    sample.id = 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+    sample.sinal = teach.gloss;
+    sample.criado_em = new Date().toISOString();
+    samples.push(sample);
+    teach.last.push(sample.id);
+    DB.put(sample).catch(function(){ toast('Não consegui guardar neste navegador. Exporte antes de sair.'); });
+    samplesChanged();
+    updateTeachBar();
+    buzz(30); chime(); flash();
+    var n = countOf(teach.gloss);
+    cam.msgUntil = now + 1600;
+    setStatus(n >= TARGET ? 'Pronto, ' + n + ' exemplos! Pode voltar.' : 'Exemplo ' + n + ' guardado. Mais um!');
+  }
+  $('#tb-undo').addEventListener('click', function(){
+    var id = teach.last.pop();
+    if (!id) return;
+    samples = samples.filter(function(s){ return s.id !== id; });
+    DB.del(id).catch(function(){});
+    samplesChanged();
+    updateTeachBar();
+    cam.msgUntil = performance.now() + 1400;
+    setStatus('Último exemplo desfeito.');
+  });
+  function openTeach(){
+    if (cur === 'splash' || cur === 'onb'){ splashToken++; store.set('sc_onb', '1'); }
+    closeSheet('sh-set'); closeSheet('sh-end');
+    go('teach');
+  }
+  $('#teach-open').addEventListener('click', openTeach);
+  $('#set-teach').addEventListener('click', openTeach);
+  $('#teach-back').addEventListener('click', function(){ go('chat'); });
+  $$('.teach-chips .chip').forEach(function(ch){
+    ch.addEventListener('click', function(){
+      teach.all = ch.getAttribute('data-tall') === '1';
+      $$('.teach-chips .chip').forEach(function(x){ x.classList.toggle('on', x === ch); });
+      renderTeach();
+    });
+  });
+  // exportar / importar: o mesmo formato vai alimentar o treino do modelo definitivo
+  $('#teach-export').addEventListener('click', function(){
+    if (!samples.length){ toast('Ainda não há exemplos para exportar.'); return; }
+    var data = { formato: 'sinalclaro-amostras', versao: 1, exportado_em: new Date().toISOString(),
+                 pontos_mao: 21, pontos_corpo: Recog.BODY, coordenadas: 'normalizadas no quadro da câmera (x, y, z), sem espelho',
+                 amostras: samples };
+    var blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'sinalclaro-amostras-' + new Date().toISOString().slice(0, 10) + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
+  });
+  $('#teach-import').addEventListener('click', function(){ $('#teach-file').click(); });
+  $('#teach-file').addEventListener('change', function(){
+    var f = this.files && this.files[0];
+    this.value = '';
+    if (!f) return;
+    f.text().then(function(txt){
+      var data = JSON.parse(txt);
+      if (!data || data.formato !== 'sinalclaro-amostras' || !Array.isArray(data.amostras)) throw new Error('formato');
+      var have = {}, add = [];
+      samples.forEach(function(s){ have[s.id] = 1; });
+      data.amostras.forEach(function(s){
+        if (s && s.id && s.sinal && Array.isArray(s.quadros) && !have[s.id]){ add.push(s); have[s.id] = 1; }
+      });
+      samples = samples.concat(add);
+      samplesChanged();
+      toast(add.length + ' exemplos importados.');
+      return DB.putMany(add);
+    }).catch(function(){ toast('Arquivo inválido: use um arquivo exportado pelo Sinal.claro.'); });
+  });
+  var clearArm = 0;
+  $('#teach-clear').addEventListener('click', function(){
+    var b = this;
+    if (!samples.length){ toast('Não há exemplos para apagar.'); return; }
+    if (Date.now() > clearArm){
+      clearArm = Date.now() + 3000;
+      b.textContent = 'Toque de novo para apagar ' + samples.length + ' exemplos';
+      setTimeout(function(){ b.textContent = 'Apagar todos os exemplos'; }, 3000);
+      return;
+    }
+    clearArm = 0;
+    b.textContent = 'Apagar todos os exemplos';
+    samples = [];
+    DB.clear().catch(function(){});
+    samplesChanged();
+    toast('Exemplos apagados deste navegador.');
+  });
+  DB.all().then(function(list){
+    samples = (list || []).concat(samples.filter(function(s){ return !(list || []).some(function(x){ return x.id === s.id; }); }));
+    samplesChanged();
+    if (samples.length) updateGuide();
+  }).catch(function(){});
 
   /* ================= correção manual ================= */
   var fixCat = -1;
@@ -2002,6 +2761,126 @@
     closeSheet('sh-set');
     playVideo('Este aplicativo ajuda em conversas curtas. Ele não substitui um intérprete de Libras.', { back: 'chat' });
   });
+
+  /* ================= modo apresentação =================
+     O botão Avançar (ou →, espaço, Page Down e passadores de slides) executa
+     o próximo passo no celular, como se alguém tocasse no lugar destacado.
+     Voltar recomeça a demonstração sem animação e refaz os passos até o
+     estado anterior. */
+  var pres = { fast: false, busy: false, libras: false, hist: [] };
+  function tap(sel){ var el = $(sel); if (!el || el.disabled) return false; el.click(); return true; }
+  function presSig(){ return (guideKey() || cur) + (cur === 'onb' ? '#' + onbStep : '') + (deskOpen ? '+desk' : '') + (S.hc ? '+hc' : ''); }
+  function presTrack(){
+    if (pres.busy && !pres.fast) return;
+    var sg = presSig();
+    if (pres.hist[pres.hist.length - 1] !== sg) pres.hist.push(sg);
+  }
+  function presAction(){
+    if (deskOpen){ closeDesk(); return true; }
+    switch (guideKey()){
+      case 'splash': if (!splashDone) return false; splashDone(); return true;
+      case 'onb0':
+        if (!pres.libras){ pres.libras = true; return tap('#onb-libras'); }
+        return tap('#onb-next');
+      case 'onb1': case 'onb2': return tap('#onb-next');
+      case 'chat0': case 'chat-phrase': case 'chat-phrase-real': return tap('#go-sign');
+      case 'cam': case 'cam-sim': case 'cam-real': case 'cam-low':
+        if (cam.paused) return false;
+        cam.paused = true; recognized(); return true;      // na apresentação, o sinal é o do roteiro
+      case 'result': return tap('#res-ok');
+      case 'chat-sign': return tap('#go-phr');
+      case 'phr': return tap('.cat-card');
+      case 'phr-list': return tap('#phr-body .row-btn');
+      case 'video': case 'onb-video': if (!vid || vid.done) return false; endVideo(false); return true;
+      case 'low': return tap('#low-list');
+      case 'fix': return tap('#fix-tiles .tile[data-i="17"]');
+      case 'chat-fixed': return tap('#set-open');
+      case 'settings':
+        tap('.sw[data-set=hc]');                            // 1º toque liga o contraste,
+        if (!S.hc) tap('#set-close');                       // 2º desliga e fecha
+        return true;
+      case 'chat-end': return tap('#end-open');
+      case 'end': return tap('#end-yes');
+      case 'done': openDesk(); return true;
+      case 'teach': case 'teach-cam': go('chat'); return true;
+    }
+    return false;
+  }
+  function presNext(){
+    if (pres.busy) return;
+    if (presAction()) setTimeout(presTrack, 30);
+    presUI();
+  }
+  function presRestart(){
+    pres.libras = false;
+    pres.hist = [];
+    $('#restart').click();
+  }
+  function presPrev(){
+    if (pres.busy) return;
+    presTrack();
+    if (pres.hist.length < 2) return;
+    var old = pres.hist.slice(0, -1), target = old[old.length - 1];
+    var need = old.filter(function(x){ return x === target; }).length;
+    pres.busy = true; pres.fast = true;
+    document.body.classList.add('instant');
+    presRestart();
+    var t0 = performance.now(), before = null, until = 0;
+    function finish(){
+      pres.busy = false; pres.fast = false;
+      document.body.classList.remove('instant');
+      gKey = null; updateGuide(); presUI();
+    }
+    (function step(){
+      presTrack();
+      var sg = presSig();
+      if (sg === target && pres.hist.filter(function(x){ return x === target; }).length >= need){ finish(); return; }
+      if (performance.now() - t0 > 20000){ finish(); return; }
+      if (before !== null && sg === before && performance.now() < until){ setTimeout(step, 20); return; }
+      before = null;
+      if (presAction()){ before = sg; until = performance.now() + 2500; }
+      setTimeout(step, 30);
+    })();
+    presUI();
+  }
+  function presUI(){
+    if (!pres || !$('#pres')) return;
+    var k = guideKey(), g = GUIDE[k], total = ROUTE.length;
+    if (deskOpen){
+      $('#pres-step').textContent = 'Passo ' + total + ' de ' + total;
+      $('#pres-title').textContent = 'O lado da instituição';
+    } else if (g){
+      $('#pres-step').textContent = g[0] < 0 ? 'Fora do roteiro' : g[0] >= total ? 'Fim do roteiro' : 'Passo ' + (g[0] + 1) + ' de ' + total;
+      $('#pres-title').textContent = g[2];
+    }
+    var end = k === 'complete' && !deskOpen;
+    $('#pres-next').disabled = pres.busy || end;
+    $('#pres-next-t').textContent = end ? 'Fim' : 'Avançar';
+    $('#pres-prev').disabled = pres.busy || pres.hist.length < 2;
+    $('#pres-restart').disabled = pres.busy;
+    $('#pres').classList.toggle('busy', pres.busy);
+  }
+  function toggleFull(){
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (e) {}
+  }
+  $('#pres-next').addEventListener('click', presNext);
+  $('#g-next').addEventListener('click', presNext);
+  $('#pres-prev').addEventListener('click', presPrev);
+  $('#pres-restart').addEventListener('click', function(){ if (!pres.busy) presRestart(); });
+  $('#pres-full').addEventListener('click', toggleFull);
+  window.addEventListener('keydown', function(e){
+    if (document.body.classList.contains('full') || e.metaKey || e.ctrlKey || e.altKey) return;
+    var t = e.target, tag = t && t.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+    var k = e.key;
+    if (k === 'ArrowRight' || k === 'PageDown' || k === ' '){ e.preventDefault(); presNext(); }
+    else if (k === 'ArrowLeft' || k === 'PageUp'){ e.preventDefault(); presPrev(); }
+    else if (k === 'f' || k === 'F'){ e.preventDefault(); toggleFull(); }
+  });
+  setInterval(function(){ presTrack(); presUI(); }, 400);
 
   /* ================= reiniciar demonstração ================= */
   $('#restart').addEventListener('click', function(){

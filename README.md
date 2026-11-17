@@ -9,6 +9,7 @@ Reconhece sinais de Libras pela câmera, 100% no dispositivo — sem internet, s
 [Visão geral](#-sobre-o-projeto) ·
 [Problema](#-o-problema) ·
 [Arquitetura](#-arquitetura) ·
+[Protótipo](#-protótipo-navegável-prototipo) ·
 [Painel institucional](#-painel-institucional-este-repositório) ·
 [Como rodar](#-como-rodar) ·
 [Equipe](#-equipe)
@@ -92,10 +93,46 @@ O quadro da câmera nunca passa da camada de Visão — ali ele vira apenas um c
 
 ## 🧪 Protótipo navegável (`prototipo/`)
 
-Uma apresentação interativa do produto, em HTML puro, que roda direto no navegador:
+Uma apresentação interativa do produto, em HTML puro, que roda direto no navegador.
 
-- **`prototipo/index.html`** — o app de balcão num celular Android, com um guia lateral de 12 passos: abertura, onboarding, conversa, reconhecimento de sinal (câmera real + 21 pontos do MediaPipe, sinal reconhecido simulado), frases em Libras, baixa confiança e correção manual, acessibilidade (alto contraste, tamanho de fonte) e encerramento da sessão. No último passo o celular se transforma num monitor e mostra o painel da instituição.
-- **`prototipo/painel.html`** — o painel institucional (login, visão geral, sinais confundidos, limiares, frases, versões do modelo e telemetria anônima). Abrir com `#direto` no fim da URL pula o login.
+**`prototipo/index.html`: o app de balcão.** Mostra o app num celular Android, com um guia lateral que explica cada momento em 12 passos:
+- abertura e primeiro uso;
+- conversa, sinalizar e resultado com confiança;
+- frases e vídeo em Libras;
+- baixa confiança e correção manual;
+- acessibilidade e encerramento.
+
+No último passo o celular se transforma num monitor e mostra o painel da instituição.
+
+**`prototipo/painel.html`: o painel institucional.** Tem login, visão geral, sinais confundidos, limiares, frases, versões do modelo e telemetria anônima. Abrir com `#direto` no fim do endereço pula o login.
+
+### Modo apresentação
+
+O botão **Avançar**, na barra inferior, executa o próximo passo no celular, como se alguém tocasse no lugar destacado. Também funcionam:
+
+| Ação | Como fazer |
+|---|---|
+| Avançar | **→**, **espaço**, **Page Down** ou passador de slides |
+| Voltar um passo | **←** ou **Page Up** |
+| Tela cheia | **F** |
+
+### Reconhecimento real (fase 1)
+
+1. Em **Ensinar sinais**, grave de 5 a 8 exemplos de cada sinal. Levante as mãos, faça o sinal e abaixe as mãos: é isso que marca o começo e o fim do sinal.
+2. Na conversa, o app compara o que a câmera vê com esses exemplos.
+
+**O que o app guarda:** só os 21 pontos de cada mão e alguns pontos do corpo (ombros, rosto), nunca imagem. As amostras ficam no próprio navegador e podem ser exportadas em JSON, que é o mesmo formato que vai alimentar o treino do modelo definitivo (fase 2).
+
+**Como ele compara:**
+- **Posição e formato da mão:** a mão é medida em relação aos ombros e ao tamanho da palma. Por isso a distância da câmera não importa.
+- **Velocidade:** a comparação entre sequências (DTW) tolera o mesmo sinal feito mais rápido ou mais devagar.
+- **Canhotos:** cada exemplo também vale espelhado. Assim, o sinal feito com a outra mão também é reconhecido.
+
+**Como ele decide:** abaixo do limiar de confiança, o app não chuta. Ele pede para repetir ou oferece a lista de sinais.
+
+**Desempenho ao vivo:** a câmera mostra quadros por segundo e tempo de leitura, as metas RNF-002 e RNF-001 da especificação.
+
+### Como rodar
 
 Para a câmera funcionar, sirva a pasta por HTTP local em vez de abrir o arquivo direto:
 
@@ -104,7 +141,20 @@ cd prototipo && python3 -m http.server 5500
 # abra http://localhost:5500
 ```
 
-Sem câmera (ou sem permissão), o protótipo entra sozinho no modo simulado.
+Sem câmera, ou sem permissão, o protótipo entra sozinho no modo de demonstração.
+
+### Testes do reconhecimento
+
+```bash
+npm run test:prototipo
+```
+
+Os testes rodam o código do próprio protótipo no Node, com mãos sintéticas, e conferem que o app:
+- acerta os sinais ensinados;
+- recusa gestos desconhecidos;
+- reconhece a mão esquerda;
+- detecta o começo e o fim do sinal;
+- classifica em menos de 100 ms.
 
 ## 📂 Estrutura do projeto
 
@@ -113,8 +163,9 @@ sinal_claro/
 ├── App.tsx                          # Ponto de entrada — renderiza o login institucional
 ├── app.json                         # Configuração do Expo
 ├── prototipo/
-│   ├── index.html                   # Protótipo do app de balcão + guia
+│   ├── index.html                   # Protótipo do app de balcão + guia + modo apresentação
 │   └── painel.html                  # Protótipo do painel institucional
+├── testes/                          # Testes do reconhecimento (Node, sem navegador)
 ├── docs/
 │   └── especificacao-sinal-claro.pdf
 └── src/
