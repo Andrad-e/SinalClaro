@@ -113,8 +113,10 @@ O botão **Avançar**, na barra inferior, executa o próximo passo no celular, c
 | Ação | Como fazer |
 |---|---|
 | Avançar | **→**, **espaço**, **Page Down** ou passador de slides |
-| Voltar um passo | **←** ou **Page Up** |
+| Voltar um passo | Botão **Voltar**, **←** ou **Page Up** |
 | Tela cheia | **F** |
+
+O **Voltar** desfaz o último passo na hora: antes de cada passo, o app guarda o estado do celular e, ao voltar, restaura esse estado sem refazer a demonstração. Vale também para toques feitos direto no celular.
 
 ### Reconhecimento real (fase 1)
 

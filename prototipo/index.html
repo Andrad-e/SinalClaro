@@ -150,7 +150,22 @@
   .pres-next:disabled{opacity:.45;cursor:default}
   .pres-next kbd{font:500 10.5px var(--mono);padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.18)}
   .pres button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-  .pres.busy .pres-info b::after{content:" · voltando…";color:var(--ink-3);font-weight:400}
+  .pres-back{
+    height:40px;padding:0 16px 0 10px;border:1px solid var(--line);border-radius:11px;background:#fff;color:var(--ink);
+    font-size:14px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;gap:9px;
+    transition:background .15s ease,border-color .15s ease,transform .1s ease,opacity .2s ease;
+  }
+  .pres-back:hover:not(:disabled){background:#f1f4f9;border-color:#cdd5e3}
+  .pres-back:active:not(:disabled){transform:scale(.97)}
+  .pres-back:disabled{opacity:.4;cursor:default}
+  .pres-back kbd{font:500 10.5px var(--mono);padding:2px 6px;border-radius:5px;background:#eef1f6;color:var(--ink-2)}
+  .g-back{
+    margin-top:10px;display:inline-flex;align-items:center;gap:7px;padding:6px 4px;border:none;background:none;cursor:pointer;
+    font-size:13px;color:var(--ink-3);border-radius:8px;transition:color .15s ease;
+  }
+  .g-back:hover{color:var(--ink)}
+  .g-back:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .g-back[hidden]{display:none}
   body.full .pres{display:none}
   .acts{flex-direction:row;flex-wrap:wrap;align-items:center}
   .acts .text-link{flex-basis:100%}
@@ -909,6 +924,10 @@
         <span class="arr"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"/></svg></span>
         <span><small>Próximo passo</small><b id="g-next-t"></b></span>
       </button>
+      <button type="button" class="g-back" id="g-back" title="Voltar um passo (←)" hidden>
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H4M7.5 4.5 4 8l3.5 3.5"/></svg>
+        Voltar ao passo anterior
+      </button>
       <button type="button" class="g-cta" id="g-cta" hidden>
         <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="10" rx="1.5"/><path d="M7.5 16.5h5M10 13.5v3"/></svg>
         <span id="g-cta-t">Ver o lado da instituição</span>
@@ -922,8 +941,8 @@
   <button type="button" class="pres-btn" id="pres-restart" title="Recomeçar a apresentação" aria-label="Recomeçar a apresentação">
     <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2.5 8a5.5 5.5 0 1 0 1.7-4M2.5 2.5V5H5"/></svg>
   </button>
-  <button type="button" class="pres-btn" id="pres-prev" title="Voltar um passo (←)" aria-label="Voltar um passo">
-    <svg width="17" height="17" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 8H4M7.5 4.5 4 8l3.5 3.5"/></svg>
+  <button type="button" class="pres-back" id="pres-prev" title="Voltar um passo (←)">
+    <kbd aria-hidden="true">←</kbd><span>Voltar</span>
   </button>
   <div class="pres-info" aria-live="polite"><span id="pres-step">Passo 1 de 12</span><b id="pres-title">Abertura</b></div>
   <button type="button" class="pres-next" id="pres-next" title="Avançar (→, espaço ou passador)">
@@ -1432,7 +1451,7 @@
       }, 950);
     }, 260);
   }
-  function closeDesk(){
+  function closeDesk(then){
     if (!deskOpen) return;
     clearLater();
     if (window.speechSynthesis) try { speechSynthesis.cancel(); } catch (e) {}
@@ -1448,6 +1467,7 @@
         deskIframe.src = 'about:blank';
         screenEl.classList.remove('wipe');
         deskOpen = false;
+        if (typeof then === 'function'){ then(); return; }
         F.desk = true;
         if (cur !== 'chat') go('chat'); else updateGuide();
       }, 1000);
@@ -2402,13 +2422,20 @@
     if (r.conf < r.s.thr){
       pending = null;
       // no reconhecimento real, o palpite aparece só como pergunta: quem confirma é uma pessoa
-      lowGuess = r.real && r.conf >= 0.4 ? r : null;
-      $('#low-guess').style.display = lowGuess ? '' : 'none';
-      if (lowGuess) $('#low-guess-t').textContent = r.s.pt;
       F.lowShown = true;
-      openSheet('sh-low', 'low');
+      showLow(r.real && r.conf >= 0.4 ? r : null);
       return;
     }
+    showResult(r);
+    setTimeout(function(){ speak(r.s.pt); }, 250);
+  }
+  function showLow(guess){
+    lowGuess = guess;
+    $('#low-guess').style.display = guess ? '' : 'none';
+    if (guess) $('#low-guess-t').textContent = guess.s.pt;
+    openSheet('sh-low', 'low');
+  }
+  function showResult(r){
     pending = r;
     $('#res-pt').textContent = r.s.pt;
     $('#res-gl').textContent = 'sinal ' + r.s.gloss + (r.real ? ' · reconhecimento real' : '');
@@ -2418,7 +2445,6 @@
     $('#res-bar').style.width = '0';
     openSheet('sh-result', 'result');
     setTimeout(function(){ $('#res-bar').style.width = (r.conf * 100) + '%'; }, 120);
-    setTimeout(function(){ speak(r.s.pt); }, 250);
   }
   function retry(){
     closeSheet('sh-result'); closeSheet('sh-low');
@@ -2766,15 +2792,105 @@
   /* ================= modo apresentação =================
      O botão Avançar (ou →, espaço, Page Down e passadores de slides) executa
      o próximo passo no celular, como se alguém tocasse no lugar destacado.
-     Voltar recomeça a demonstração sem animação e refaz os passos até o
-     estado anterior. */
-  var pres = { fast: false, busy: false, libras: false, hist: [] };
+     Antes de cada passo (pelo Avançar ou por um toque direto no celular), o
+     estado do app é guardado numa "foto". Voltar restaura a foto anterior na
+     hora, sem refazer a demonstração. */
+  var pres = { fast: false, busy: false, acting: false, libras: false, hist: [] };
+  var SHEETS = ['sh-set', 'sh-end', 'sh-result', 'sh-low'];
   function tap(sel){ var el = $(sel); if (!el || el.disabled) return false; el.click(); return true; }
   function presSig(){ return (guideKey() || cur) + (cur === 'onb' ? '#' + onbStep : '') + (deskOpen ? '+desk' : '') + (S.hc ? '+hc' : ''); }
-  function presTrack(){
-    if (pres.busy && !pres.fast) return;
-    var sg = presSig();
-    if (pres.hist[pres.hist.length - 1] !== sg) pres.hist.push(sg);
+  function copyAll(list){ return list.map(function(m){ return Object.assign({}, m); }); }
+  function presSnap(){
+    return {
+      sig: presSig(), cur: cur, desk: deskOpen,
+      onbStep: onbStep, onbCam: $('#onb-cam-text').textContent,
+      S: Object.assign({}, S), F: Object.assign({}, F),
+      chat: copyAll(chat), sessStart: sessStart,
+      scriptI: scriptI, pending: pending, lowGuess: lowGuess,
+      phrCat: phrCat, phrQ: $('#phr-q').value,
+      vid: vid && !vid.done ? { text: vid.text, opts: Object.assign({}, vid.opts) } : null,
+      camPurpose: cam.purpose,
+      sheets: SHEETS.filter(function(id){ return $('#' + id).classList.contains('on'); }),
+      libras: pres.libras, seen: !!store.get('sc_onb')
+    };
+  }
+  function presPush(s){
+    pres.hist.push(s);
+    if (pres.hist.length > 80) pres.hist.shift();
+  }
+  // toques diretos no celular também entram no histórico (só se mudaram o passo)
+  document.addEventListener('click', function(e){
+    if (pres.acting || pres.busy) return;
+    var t = e.target;
+    if (!t || !t.closest || t.closest('#pres, #g-next, #g-back')) return;
+    var s = presSnap();
+    setTimeout(function(){ if (!pres.busy && presSig() !== s.sig) { presPush(s); presUI(); } }, 60);
+  }, true);
+
+  function presRestore(s){
+    // o computador encolhe de volta no celular com a animação normal e, depois, restaura
+    if (deskOpen && !s.desk){
+      pres.busy = true; presUI();
+      closeDesk(function(){ pres.busy = false; presRestore(s); });
+      return;
+    }
+    pres.busy = true;
+    document.body.classList.add('instant');
+    // para o que estiver em andamento
+    splashToken++; splashDone = null;
+    if (vid){ vid.done = true; cancelAnimationFrame(vid.raf); vidSigner.run(0); }
+    if (window.speechSynthesis) try { speechSynthesis.cancel(); } catch (e) {}
+    if (cur === 'cam') stopCam();
+    SHEETS.forEach(function(id){ $('#' + id).classList.remove('on'); });
+    $('#scrim').classList.remove('on');
+
+    if (s.cur === 'splash'){
+      $('#restart').click();
+      pres.libras = false; pres.hist = [];
+      return presDone();
+    }
+    // estado do app
+    S = Object.assign({}, s.S); applySettings();
+    F = Object.assign({}, s.F);
+    chat = copyAll(s.chat); sessStart = s.sessStart;
+    scriptI = s.scriptI; pending = s.pending; lowGuess = s.lowGuess;
+    pres.libras = s.libras;
+    if (s.seen) store.set('sc_onb', '1'); else store.del('sc_onb');
+    $('#onb-cam-text').textContent = s.onbCam;
+
+    // tela
+    cur = null;
+    if (s.cur === 'onb'){
+      onbStep = Math.min(s.onbStep, 2);
+      go('onb'); showOnb();
+      if (s.onbStep === 3){ onbStep = 3; $('#onb-next').textContent = 'Continuar sem câmera'; }
+    } else if (s.cur === 'cam'){
+      openCam(s.camPurpose);
+      if (s.sheets.indexOf('sh-result') > -1 && s.pending){ cam.paused = true; showResult(s.pending); }
+      else if (s.sheets.indexOf('sh-low') > -1){ cam.paused = true; showLow(s.lowGuess); }
+    } else if (s.cur === 'video' && s.vid){
+      playVideo(s.vid.text, Object.assign({}, s.vid.opts));
+    } else if (s.cur === 'phr'){
+      go('phr');
+      phrCat = s.phrCat; $('#phr-q').value = s.phrQ;
+      renderPhr();
+    } else {
+      go(s.cur === 'video' ? 'chat' : s.cur);
+    }
+    if (s.sheets.indexOf('sh-set') > -1) openSheet('sh-set');
+    if (s.sheets.indexOf('sh-end') > -1) openSheet('sh-end');
+    if (s.desk && !deskOpen) openDesk();
+    presDone();
+  }
+  function presDone(){
+    gKey = null; updateGuide();
+    // dois quadros sem animação para tudo assentar; depois, um esmaecer curto no celular
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      document.body.classList.remove('instant');
+      pres.busy = false;
+      presUI();
+      if (!reduce && screenEl.animate) screenEl.animate([{ opacity: 0.55 }, { opacity: 1 }], { duration: 200, easing: 'ease-out' });
+    }); });
   }
   function presAction(){
     if (deskOpen){ closeDesk(); return true; }
@@ -2809,39 +2925,22 @@
   }
   function presNext(){
     if (pres.busy) return;
-    if (presAction()) setTimeout(presTrack, 30);
+    var s = presSnap();
+    pres.acting = true;
+    var ok = false;
+    try { ok = presAction(); } finally { pres.acting = false; }
+    if (ok) presPush(s);
     presUI();
   }
   function presRestart(){
     pres.libras = false;
     pres.hist = [];
     $('#restart').click();
+    presUI();
   }
   function presPrev(){
-    if (pres.busy) return;
-    presTrack();
-    if (pres.hist.length < 2) return;
-    var old = pres.hist.slice(0, -1), target = old[old.length - 1];
-    var need = old.filter(function(x){ return x === target; }).length;
-    pres.busy = true; pres.fast = true;
-    document.body.classList.add('instant');
-    presRestart();
-    var t0 = performance.now(), before = null, until = 0;
-    function finish(){
-      pres.busy = false; pres.fast = false;
-      document.body.classList.remove('instant');
-      gKey = null; updateGuide(); presUI();
-    }
-    (function step(){
-      presTrack();
-      var sg = presSig();
-      if (sg === target && pres.hist.filter(function(x){ return x === target; }).length >= need){ finish(); return; }
-      if (performance.now() - t0 > 20000){ finish(); return; }
-      if (before !== null && sg === before && performance.now() < until){ setTimeout(step, 20); return; }
-      before = null;
-      if (presAction()){ before = sg; until = performance.now() + 2500; }
-      setTimeout(step, 30);
-    })();
+    if (pres.busy || !pres.hist.length) return;
+    presRestore(pres.hist.pop());
     presUI();
   }
   function presUI(){
@@ -2857,7 +2956,8 @@
     var end = k === 'complete' && !deskOpen;
     $('#pres-next').disabled = pres.busy || end;
     $('#pres-next-t').textContent = end ? 'Fim' : 'Avançar';
-    $('#pres-prev').disabled = pres.busy || pres.hist.length < 2;
+    $('#pres-prev').disabled = pres.busy || !pres.hist.length;
+    $('#g-back').hidden = !pres.hist.length;
     $('#pres-restart').disabled = pres.busy;
     $('#pres').classList.toggle('busy', pres.busy);
   }
@@ -2881,7 +2981,8 @@
     else if (k === 'ArrowLeft' || k === 'PageUp'){ e.preventDefault(); presPrev(); }
     else if (k === 'f' || k === 'F'){ e.preventDefault(); toggleFull(); }
   });
-  setInterval(function(){ presTrack(); presUI(); }, 400);
+  $('#g-back').addEventListener('click', presPrev);
+  setInterval(presUI, 400);
 
   /* ================= reiniciar demonstração ================= */
   $('#restart').addEventListener('click', function(){
